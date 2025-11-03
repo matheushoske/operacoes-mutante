@@ -17,22 +17,42 @@ describe('Suíte de Testes Fraca para 50 Operações Aritméticas', () => {
   test('3. deve multiplicar dois números positivos', () => { expect(multiplicacao(3, 4)).toBe(12); });
   test('4. deve dividir e lançar erro para divisão por zero', () => {
     expect(divisao(10, 2)).toBe(5);
-    expect(() => divisao(5, 0)).toThrow();
+    expect(() => divisao(5, 0)).toThrow('Divisão por zero não é permitida.');
   });
   test('5. deve calcular a potência com expoente positivo', () => { expect(potencia(2, 3)).toBe(8); });
   test('6. deve calcular a raiz quadrada de um quadrado perfeito', () => { expect(raizQuadrada(16)).toBe(4); });
+  test('6b. deve lançar erro para raiz quadrada de número negativo', () => {
+    expect(() => raizQuadrada(-1)).toThrow('Não é possível calcular a raiz quadrada de um número negativo.');
+  });
+  test('6c. deve calcular raiz quadrada de zero', () => { expect(raizQuadrada(0)).toBe(0); });
   test('7. deve retornar o resto da divisão', () => { expect(restoDivisao(10, 3)).toBe(1); });
   test('8. deve calcular o fatorial de um número maior que 1', () => { expect(fatorial(4)).toBe(24); });
+  test('8b. deve calcular fatorial de zero', () => { expect(fatorial(0)).toBe(1); });
+  test('8c. deve calcular fatorial de um', () => { expect(fatorial(1)).toBe(1); });
+  test('8e. deve calcular fatorial de dois', () => { expect(fatorial(2)).toBe(2); });
+  test('8d. deve lançar erro para fatorial de número negativo', () => {
+    expect(() => fatorial(-1)).toThrow('Fatorial não é definido para números negativos.');
+  });
   test('9. deve calcular a média de um array com múltiplos elementos', () => { expect(mediaArray([10, 20, 30])).toBe(20); });
+  test('9b. deve retornar zero para média de array vazio', () => { expect(mediaArray([])).toBe(0); });
   test('10. deve somar um array com múltiplos elementos', () => { expect(somaArray([1, 2, 3])).toBe(6); });
 
   // === Testes para o Bloco 2 (11-20) ===
   test('11. deve encontrar o valor máximo em um array', () => { expect(maximoArray([1, 50, 10])).toBe(50); });
+  test('11b. deve lançar erro para máximo de array vazio', () => {
+    expect(() => maximoArray([])).toThrow('Array vazio не possui valor máximo.');
+  });
   test('12. deve encontrar o valor mínimo em um array', () => { expect(minimoArray([10, 2, 100])).toBe(2); });
+  test('12b. deve lançar erro para mínimo de array vazio', () => {
+    expect(() => minimoArray([])).toThrow('Array vazio не possui valor mínimo.');
+  });
   test('13. deve retornar o valor absoluto de um número negativo', () => { expect(valorAbsoluto(-5)).toBe(5); });
   test('14. deve arredondar um número para cima', () => { expect(arredondar(9.8)).toBe(10); });
   test('15. deve retornar true para um número par', () => { expect(isPar(100)).toBe(true); });
+  test('15b. deve retornar false para um número ímpar', () => { expect(isPar(7)).toBe(false); });
   test('16. deve retornar true para um número ímpar', () => { expect(isImpar(7)).toBe(true); });
+  test('16b. deve retornar false para um número par', () => { expect(isImpar(100)).toBe(false); });
+  test('16c. deve retornar false para isImpar com número par', () => { expect(isImpar(2)).toBe(false); });
   test('17. deve calcular uma porcentagem simples', () => { expect(calcularPorcentagem(50, 200)).toBe(100); });
   test('18. deve aumentar um valor em uma porcentagem', () => { expect(aumentarPorcentagem(100, 10)).toBeCloseTo(110); });
   test('19. deve diminuir um valor em uma porcentagem', () => { expect(diminuirPorcentagem(100, 10)).toBeCloseTo(90); });
@@ -54,22 +74,61 @@ describe('Suíte de Testes Fraca para 50 Operações Aritméticas', () => {
   test('31. deve calcular o MDC de dois números', () => { expect(mdc(10, 5)).toBe(5); });
   test('32. deve calcular o MMC de dois números', () => { expect(mmc(10, 5)).toBe(10); });
   test('33. deve verificar que um número é primo', () => { expect(isPrimo(7)).toBe(true); });
+  test('33b. deve retornar false para número não primo', () => { expect(isPrimo(4)).toBe(false); });
+  test('33c. deve retornar false para 1', () => { expect(isPrimo(1)).toBe(false); });
+  test('33d. deve retornar false para 0', () => { expect(isPrimo(0)).toBe(false); });
+  test('33e. deve retornar false para número negativo', () => { expect(isPrimo(-5)).toBe(false); });
+  test('33f. deve retornar false para número composto', () => { expect(isPrimo(9)).toBe(false); });
   test('34. deve calcular o 10º termo de Fibonacci', () => { expect(fibonacci(10)).toBe(55); });
   test('35. deve calcular o produto de um array', () => { expect(produtoArray([2, 3, 4])).toBe(24); });
+  test('35b. deve retornar 1 para produto de array vazio', () => { expect(produtoArray([])).toBe(1); });
+  test('35c. deve retornar valor correto para produto de array não vazio', () => { expect(produtoArray([2])).toBe(2); });
+  test('35d. deve garantir que array vazio retorna 1 diretamente sem passar pelo reduce', () => {
+    const result = produtoArray([]);
+    expect(result).toBe(1);
+    expect(result).not.toBe(0);
+  });
   test('36. deve manter um valor dentro de um intervalo (clamp)', () => { expect(clamp(5, 0, 10)).toBe(5); });
+  test('36b. deve retornar min para valor menor que min', () => { expect(clamp(-5, 0, 10)).toBe(0); });
+  test('36c. deve retornar max para valor maior que max', () => { expect(clamp(15, 0, 10)).toBe(10); });
+  test('36d. deve retornar valor quando igual ao min', () => { expect(clamp(0, 0, 10)).toBe(0); });
+  test('36e. deve retornar valor quando igual ao max', () => { expect(clamp(10, 0, 10)).toBe(10); });
+  test('36f. deve retornar valor quando está entre min e max (não igual)', () => { expect(clamp(5.5, 0, 10)).toBe(5.5); });
+  test('36g. deve garantir que valor menor que min retorna min e não passa do primeiro if', () => {
+    const result1 = clamp(0.5, 1, 10);
+    expect(result1).toBe(1);
+    const result2 = clamp(0.999, 1, 10);
+    expect(result2).toBe(1);
+  });
   test('37. deve verificar se um número é divisível por outro', () => { expect(isDivisivel(10, 2)).toBe(true); });
+  test('37b. deve retornar false quando não é divisível', () => { expect(isDivisivel(10, 3)).toBe(false); });
   test('38. deve converter Celsius para Fahrenheit', () => { expect(celsiusParaFahrenheit(0)).toBe(32); });
+  test('38b. deve converter Celsius para Fahrenheit corretamente', () => { expect(celsiusParaFahrenheit(100)).toBe(212); });
   test('39. deve converter Fahrenheit para Celsius', () => { expect(fahrenheitParaCelsius(32)).toBe(0); });
+  test('39b. deve converter Fahrenheit para Celsius corretamente', () => { expect(fahrenheitParaCelsius(212)).toBe(100); });
   test('40. deve calcular o inverso de um número', () => { expect(inverso(4)).toBe(0.25); });
+  test('40b. deve lançar erro para inverso de zero', () => {
+    expect(() => inverso(0)).toThrow('Não é possível inverter o número zero.');
+  });
 
   // === Testes para o Bloco 5 (41-50) ===
   test('41. deve calcular a área de um círculo', () => { expect(areaCirculo(10)).toBeCloseTo(314.159); });
   test('42. deve calcular a área de um retângulo', () => { expect(areaRetangulo(5, 4)).toBe(20); });
   test('43. deve calcular o perímetro de um retângulo', () => { expect(perimetroRetangulo(5, 4)).toBe(18); });
   test('44. deve verificar se um número é maior que outro', () => { expect(isMaiorQue(10, 5)).toBe(true); });
+  test('44b. deve retornar false quando não é maior', () => { expect(isMaiorQue(5, 10)).toBe(false); });
+  test('44c. deve retornar false quando são iguais', () => { expect(isMaiorQue(5, 5)).toBe(false); });
   test('45. deve verificar se um número é menor que outro', () => { expect(isMenorQue(5, 10)).toBe(true); });
+  test('45b. deve retornar false quando não é menor', () => { expect(isMenorQue(10, 5)).toBe(false); });
+  test('45c. deve retornar false quando são iguais', () => { expect(isMenorQue(5, 5)).toBe(false); });
   test('46. deve verificar se dois números são iguais', () => { expect(isEqual(7, 7)).toBe(true); });
+  test('46b. deve retornar false quando não são iguais', () => { expect(isEqual(7, 8)).toBe(false); });
   test('47. deve calcular a mediana de um array ímpar e ordenado', () => { expect(medianaArray([1, 2, 3, 4, 5])).toBe(3); });
+  test('47b. deve calcular mediana de array par', () => { expect(medianaArray([1, 2, 3, 4])).toBe(2.5); });
+  test('47c. deve lançar erro para mediana de array vazio', () => {
+    expect(() => medianaArray([])).toThrow('Array vazio не possui mediana.');
+  });
+  test('47d. deve calcular mediana de array não ordenado', () => { expect(medianaArray([5, 2, 8, 1])).toBe(3.5); });
   test('48. deve calcular o dobro de um número', () => { expect(dobro(10)).toBe(20); });
   test('49. deve calcular o triplo de um número', () => { expect(triplo(10)).toBe(30); });
   test('50. deve calcular a metade de um número', () => { expect(metade(20)).toBe(10); });
